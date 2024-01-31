@@ -1,7 +1,4 @@
-# Financial Message Categorization
-
-## AIM
-Categorize messages into "money credited" or "money debited" and  extract the amounts mentioned in the messages based on their predicted categories.
+# Categorize messages into "money credited" or "money debited" and extract the amounts mentioned in the messages based on their predicted categories.
 
 ## 1. Gather Data Set and Labeling
 - Gather a dataset (list of messages) and label the messages as credited or debited, then store the dataset as a CSV file.
