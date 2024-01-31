@@ -6,13 +6,19 @@
 ```python
 import pandas as pd
 
+# pandas provides data structures for efficiently storing large datasets
+# DataFrame is a two-dimensional, tabular data structure with labeled axes (rows and columns)
+
 dataset = [
     {"text": "Money credited from Anurag", "label": "credited"},
     {"text": "debited Rs50 for groceries", "label": "debited"},
-    {"text": "Received rs100 from xyz", "label": "credited"},
+    {"text": "Received Rs100 from xyz", "label": "credited"},
     {"text": "ATM withdrawal INR30", "label": "debited"}]
 
+#Convert the dataset to a DataFrame
 df = pd.DataFrame(dataset)
+
+# index=True, would include an additional column for the row indices.
 df.to_csv('financial_dataset.csv', index=False)
 ```
 ```
