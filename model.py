@@ -10,9 +10,8 @@ from keras.models import Sequential
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+
+import pickle
 
 
 nltk.download('stopwords')
@@ -38,23 +37,6 @@ def preprocess_text(text):
 def preprocess_text_list(text_list):
     preprocessed_texts = [preprocess_text(text) for text in text_list]
     return preprocessed_texts
-
-def check_relevance(new_text, dataset_texts, similarity_threshold=0.5):
-    # Preprocess the new text
-    preprocessed_new_text = preprocess_text(new_text)
-
-    # Preprocess each text in the dataset
-    preprocessed_dataset_texts = [preprocess_text(text) for text in dataset_texts]
-
-    # Calculate similarity between the new text and each text in the dataset
-    vectorizer = CountVectorizer().fit_transform([preprocessed_new_text] + preprocessed_dataset_texts)
-    similarity_matrix = cosine_similarity(vectorizer)
-
-    # Get the similarity scores
-    similarity_scores = similarity_matrix[0][1:]
-
-    # Check if any text in the dataset is similar to the new text
-    return any(score >= similarity_threshold for score in similarity_scores)
 
 texts = [
     "Debit INR 500.00 A/c no. XX8926 12-10-23 20:02:19 UPI/P2A/328546155288/ANURAG JAIN SMS BLOCKUPI Cust ID to 01351860002, if not you - Axis Bank",
@@ -89,6 +71,10 @@ labels = df['label'].tolist()
 tokenizer = Tokenizer(oov_token='<OOV>')
 tokenizer.fit_on_texts(texts)
 
+# Save the tokenizer to a file
+with open('tokenizer.pkl', 'wb') as token_file:
+    pickle.dump(tokenizer, token_file)
+
 # Convert the text data to sequences of integers using the tokenizer
 sequences = tokenizer.texts_to_sequences(texts)
 # Pad the sequences to ensure uniform length for neural network input
@@ -118,40 +104,14 @@ encoded_labels = df['encoded_label'].tolist()
 
 # Convert labels to NumPy array
 labels_np = np.array(encoded_labels)
+# Replace the lambda function with a named function
+def custom_sparse_softmax_cross_entropy(labels, logits):
+    return tf.compat.v1.losses.sparse_softmax_cross_entropy(labels, logits)
 
-# Compile the model with the updated loss function
-model.compile(optimizer='adam', loss=lambda labels, logits: tf.compat.v1.losses.sparse_softmax_cross_entropy(labels, logits), metrics=['accuracy'])
+# Compile the model with the named function
+model.compile(optimizer='adam', loss=custom_sparse_softmax_cross_entropy, metrics=['accuracy'])
 
 # Train the model
 model.fit(padded_sequences, labels_np, epochs=100)
-
-# Assuming 'new_texts' is a list of new messages
-new_texts = ["UPI Bank account is credited with RS.25.00 on 25-Aug-2023","credit INR refund 100","Refund Processed: Refund of Rs. 237.0 for favoru Household wrap ... is successfully transferred and will be credited to your account by Oct 04, 2023.", "UPI mandate has been successfully created towards TATA TECHNOLOGIES LI for INR 15000.00. Funds blocked from A/c no. XX8926. 12e5d61d2ac145738241fbf117bb295c@okaxis - Axis Bank","Dear Player, Rs.10,000* is credited to your RummyTime a/c Ref Id: RT210XX Download the app & make your 1st deposit now - http://gmg.im/bKSfALT&C Apply"]
-
-similarity_threshold = 0.7
-
-for text in new_texts:
-    # Preprocess the new text using spaCy
-    preprocessed_new_text = preprocess_text(text)
-
-    # Preprocess each text in the dataset using spaCy
-    preprocessed_dataset_texts = [preprocess_text(dataset_text) for dataset_text in texts]
-
-    # Calculate similarity between the new text and each text in the dataset using TF-IDF
-    vectorizer = TfidfVectorizer()
-    tfidf_matrix = vectorizer.fit_transform([preprocessed_new_text] + preprocessed_dataset_texts)
-    similarity_scores = cosine_similarity(tfidf_matrix)[0][1:]
-
-    # Predictions
-    new_sequences = tokenizer.texts_to_sequences([preprocessed_new_text])
-    new_padded_sequences = pad_sequences(new_sequences, padding='post')
-    predictions = model.predict(new_padded_sequences)
-    predicted_labels = [label for label in predictions.argmax(axis=1)]
-
-    # Inverse transform predicted labels to original class labels
-    predicted_class_labels = label_encoder.inverse_transform(predicted_labels)
-
-    # Check relevance and print the result
-    is_relevant = any(score >= similarity_threshold for score in similarity_scores)
-    relevance_status = "Relevant" if is_relevant else "Irrelevant"
-    print(f"Text: {text} | Predicted Label: {predicted_class_labels[0]} | Relevance: {relevance_status}")
+# Save the model in the recommended Keras format
+model.save('trained_model.keras')

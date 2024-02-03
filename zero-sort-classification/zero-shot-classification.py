@@ -1,3 +1,6 @@
+# train your own dataset scores printed is not efficient
+# for efficient and for spam messages detectation checkout model.py and runmodel.py
+
 import pandas as pd
 import torch
 from torch.utils.data import Dataset, DataLoader
