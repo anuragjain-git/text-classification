@@ -1,4 +1,19 @@
-# Categorize messages into "money credited" or "money debited" and extract the amounts mentioned in the messages based on their predicted categories.
+# Categorize texts into labels(categories) and detect spam or irrelevent text. 
+
+### Example:
+- Categorize messages into "money credited" or "money debited" and detect spam or irrelevent messages.
+
+# Introduction
+## What does this AI Model do ?
+- You can train and build your AI Model using your own dataset in `model.py`.
+- Your data set should contain list of [ text, labels ].
+- After the model is trained and saved, you can try inputing your text in `runmodel.py` it would return what label it belongs to.
+
+## Why would you need this ?
+- Not only this tells you what label your text belongs to it also helps you identify if the text is 'spam or irrelevent' with each data in dataset.
+
+## How does it identify if the text is irrelevent/spam ?
+- It uses <a href="https://medium.com/@anurag-jain/tf-idf-vectorization-with-cosine-similarity-eca3386d4423">TF-IDFVectorization with Cosine Similarity</a>
 
 ## 1. Gather Data Set and Labeling
 - Gather a dataset (list of messages) and label the messages as credited or debited, then store the dataset as a CSV file.
