@@ -2,6 +2,7 @@ import tensorflow as tf
 from keras.models import load_model
 from model import preprocess_text  # Import your preprocessing function
 import pickle
+from model import processed_texts
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -21,8 +22,8 @@ loaded_model = load_model('trained_model.keras', custom_objects={'custom_sparse_
 df = pd.read_csv('processed_dataset.csv')
 
 # Load the processed_texts list
-with open('processed_texts.pkl', 'rb') as f:
-    processed_texts = pickle.load(f)
+# with open('processed_texts.pkl', 'rb') as f:
+#     processed_texts = pickle.load(f)
 
 # Load the tokenizer
 with open('tokenizer.pkl', 'rb') as token_file:
@@ -31,7 +32,13 @@ with open('tokenizer.pkl', 'rb') as token_file:
 label_encoder = LabelEncoder()
 
 # Assuming 'new_texts' is a list of new messages
-new_texts = ["UPI Bank account is credited with RS.25.00 on 25-Aug-2023","credit INR refund 100","Refund Processed: Refund of Rs. 237.0 for favoru Household wrap ... is successfully transferred and will be credited to your account by Oct 04, 2023.", "UPI mandate has been successfully created towards TATA TECHNOLOGIES LI for INR 15000.00. Funds blocked from A/c no. XX8926. 12e5d61d2ac145738241fbf117bb295c@okaxis - Axis Bank","Dear Player, Rs.10,000* is credited to your RummyTime a/c Ref Id: RT210XX Download the app & make your 1st deposit now - http://gmg.im/bKSfALT&C Apply"]
+new_texts = [
+    "Dear Player, Rs.10,000* is credited to your RummyTime a/c Ref Id: RT210XX Download the app & make your Ist deposit now - http://gmg.im/bKSfAL T&C Apply",
+    "UPI Bank account is credited with RS.25.00 on 25-Aug-2023",
+    "credit INR refund 100",
+    "Refund Processed: Refund of Rs. 237.0 for favoru Household wrap ... is successfully transferred and will be credited to your account by Oct 04, 2023.", 
+    "UPI mandate has been successfully created towards TATA TECHNOLOGIES LI for INR 15000.00. Funds blocked from A/c no. XX8926. 12e5d61d2ac145738241fbf117bb295c@okaxis - Axis Bank",
+    "Dear Player, Rs.10,000* is credited to your RummyTime a/c Ref Id: RT210XX Download the app & make your 1st deposit now - http://gmg.im/bKSfALT&C Apply"]
 
 similarity_threshold = 0.7
 
