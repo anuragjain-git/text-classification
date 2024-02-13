@@ -92,7 +92,7 @@ labels = df['label'].tolist()
 
 # Create a Tokenizer with an out-of-vocabulary (OOV) token
 tokenizer = Tokenizer(oov_token='<OOV>')
-print(tokenizer)
+# print(tokenizer)
 tokenizer.fit_on_texts(texts)
 
 # Save the tokenizer to a file
@@ -101,7 +101,7 @@ with open('tokenizer.pkl', 'wb') as token_file:
 
 # Convert the text data to sequences of integers using the tokenizer
 sequences = tokenizer.texts_to_sequences(texts)
-print(sequences)
+# print(sequences)
 # Pad the sequences to ensure uniform length for neural network input
 padded_sequences = pad_sequences(sequences, padding='post')
 

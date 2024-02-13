@@ -33,7 +33,10 @@ label_encoder = LabelEncoder()
 
 # Assuming 'new_texts' is a list of new messages
 new_texts = [
-    "Dear Player, Rs.10,000* is credited to your RummyTime a/c Ref Id: RT210XX Download the app & make your Ist deposit now - http://gmg.im/bKSfAL T&C Apply",
+    "Dear SBI UPI User, ur A/cX0304 debited by Rs91000 on 08Feb24 by  (Ref no 403968023837)",
+    "Dear SBI UPI User, ur A/cX0304 credited by Rs91000 on 08Feb24 by  (Ref no 403968023837)",
+    "Dear UPI user A/C X0304 debited by 70.0 on date 22Jan24 trf to TUSHAR KESHARI P Refno 402238694585. If not u? call 1800111109. -SBI",
+    "Dear UPI user A/C X0304 credited by 70.0 on date 22Jan24 trf to TUSHAR KESHARI P Refno 402238694585. If not u? call 1800111109. -SBI",
     "UPI Bank account is credited with RS.25.00 on 25-Aug-2023",
     "credit INR refund 100",
     "Refund Processed: Refund of Rs. 237.0 for favoru Household wrap ... is successfully transferred and will be credited to your account by Oct 04, 2023.", 
