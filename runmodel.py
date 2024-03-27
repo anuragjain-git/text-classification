@@ -40,7 +40,7 @@ new_texts = [
     "UPI mandate has been successfully created towards TATA TECHNOLOGIES LI for INR 15000.00. Funds blocked from A/c no. XX8926. 12e5d61d2ac145738241fbf117bb295c@okaxis - Axis Bank",
     "Dear Player, Rs.10,000* is credited to your RummyTime a/c Ref Id: RT210XX Download the app & make your 1st deposit now - http://gmg.im/bKSfALT&C Apply"]
 
-similarity_threshold = 0.7
+similarity_threshold = 0.9
 
 for text in new_texts:
     # Preprocess the new text using spaCy
