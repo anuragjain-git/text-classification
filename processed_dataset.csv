@@ -1,23 +1,23 @@
 text,label
-debit inr 50000 ac xx8926 121023 200219 upip2a328546155288anurag jain sm blockupi cust id 01351860002 axi bank,debited
-debit inr 10900 ac xx8926 270124 113657 upip2m6321837696198add money wallet sm blockupi cust id 919951860002 axi bank,debited
-inr 559000 credit ac xx8926 091123 115928 ist info upip2a334365332111anurag jainaxi bank axi bank,credited
-inr 21635 credit ac xx8926 060124 073216 ist info neftcms333334641nextbil avl bal inr 3347822 axi bank,credited
-ac xx8360 debit rs 1900 07022024 ucoupiavl bal rs3298 report disput httpsbitly3y39tlp feedback httpsrbgyfdfmda,debited
-ac xx8360 credit rs600 07022024 ucoupiavl bal rs5198 report disput httpsbitly3y39tlp feedback httpsrbgyfdfmda,credited
-dear upi user ac x0429 debit 200 date 22jan24 trf mr narayan badat refno 437652379634 u call 1800111109 sbi,debited
-dear sbi upi user ur acx0429 credit rs500 04feb24 ref 403585759002,credited
-ac 9172 debit rs5000 11022024 194440 mob bk ref 444816787760 avl bal rs187055if call 1800222243 union bank india,debited
-ac 9172 credit rs50100 23012024 200545 mob bk ref 402347890661 avl bal rs55600never share otppincvvunion bank india,credited
-rs 5000 debit ac use upi 03022024 164428 vpa abcd4321oksbi upi ref 403417856009feder bank,debited
-sent rs2000 kotak bank ac x8136 abcd2003oksbi 030224upi ref 403418725300 kotakcomfraud,debited
-receiv rs5000 kotak bank ac x8136 abcd4321oksbi 030224upi ref400653974000,credited
-updat inr 100000 debit hdfc bank xx2002 11dec23 info ft dr xxxxxxxxxx1498 anurag jain avl balinr 489100,debited
-hdfc bank rs 100 credit ac xxxxxx2002 230124 ac link vpa 9777777711fam upi ref 408888887329,credited
-jpb ac xxxx0956 credit rs2500 25aug2023 current account balanc rs25,credited
-rs550 sent abcd12341okicici ppbl ac 91xx8089upi ref439432479819balancehttpsmpaytmmepbcheckb helphttpmpytmcar,debited
-irctc cf request money googl pay upi app approv inr 103360 debit ac axi bank,requested
-receiv upi mandat collect request tata technolog li inr 1500000 log googl pay app author axi bank,requested
-anurag jain request money googl pay approv request inr 3100 debit ac axi bank,requested
-flipkart refund process refund rs 2370 favoru household wrap success transfer credit account oct 04 2023,willcredit
-upi mandat success creat toward tata technolog li inr 1500000 fund block ac xx8926 12e5d61d2ac145738241fbf117bb295cokaxi axi bank,blocked
+debit inr ac xxupipjain sm blockupi cust id axi bank,debited
+debit inr ac xxupipmoney wallet sm blockupi cust id axi bank,debited
+inr credit ac xxon ist info upipjainaxi bank axi bank,credited
+inr credit ac xxon ist info neftcmsavl bal inr axi bank,credited
+ac xxdebit rs ucoupiavl bal rsreport disput httpsbitlyfor feedback httpsrbgyfdfmda,debited
+ac xxcredit rson ucoupiavl bal rsreport disput httpsbitlyfor feedback httpsrbgyfdfmda,credited
+dear upi user ac xdebit date trf mr narayan badat refno u call sbi,debited
+dear sbi upi user ur acxcredit rson ref,credited
+ac debit rson mob bk ref avl bal rsnot call union bank india,debited
+ac credit rson mob bk ref avl bal rsshare otppincvvunion bank india,credited
+rs debit ac use upi vpa abcd upi ref bank,debited
+sent rsfrom kotak bank ac xto abcdon ref kotakcomfraud,debited
+receiv rsin kotak bank ac xfrom abcdon ref,credited
+updat inr debit hdfc bank xxon info ft dr xxxxxxxxxx anurag jain avl balinr,debited
+hdfc bank rs credit ac xxxxxxon ac link vpa upi ref,credited
+jpb ac xxxxi credit rson current account balanc rs,credited
+rssent abcdfrom ppbl ac refhelphttpmpytmcar,debited
+irctc cf request money googl pay upi app approv inr debit ac axi bank,requested
+receiv upi mandat collect request tata technolog li inr log googl pay app author axi bank,requested
+anurag jain request money googl pay approv request inr debit ac axi bank,requested
+flipkart refund process refund rs favoru household wrap success transfer credit account oct,willcredit
+upi mandat success creat toward tata technolog li inr fund block ac xx axi bank,blocked

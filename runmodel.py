@@ -48,7 +48,7 @@ new_texts = [
     "Dear Player, Rs.10,000* is credited to your RummyTime a/c Ref Id: RT210XX Download the app & make your 1st deposit now - http://gmg.im/bKSfALT&C Apply"
     ]
 
-similarity_threshold = 0.5
+similarity_threshold = 0.9
 
 for text in new_texts:
     # Preprocess the new text using spaCy

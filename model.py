@@ -10,6 +10,7 @@ from keras.models import Sequential
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
+import re
 
 import pickle
 
@@ -17,12 +18,47 @@ import pickle
 nltk.download('stopwords')
 nltk.download('punkt')
 
+# def preprocess_text(text):
+#     # Remove punctuation, convert to lowercase
+#     # text = ''.join([char.lower() for char in text if char.isalnum() and not char.isdigit() or char.isspace()])
+#     text = ''.join([char.lower() for char in text if char.isalnum() or char.isspace()])
+    
+#     # Tokenization
+#     tokens = word_tokenize(text)
+    
+#     # Remove stopwords
+#     stop_words = set(stopwords.words('english'))
+#     tokens = [word for word in tokens if word not in stop_words]
+    
+#     # Stemming
+#     stemmer = PorterStemmer()
+#     tokens = [stemmer.stem(word) for word in tokens]
+    
+#     return ' '.join(tokens)
+
 def preprocess_text(text):
-    # Remove punctuation and convert to lowercase
-    text = ''.join([char.lower() for char in text if char.isalnum() or char.isspace()])
+    # Convert to lowercase
+    text = text.lower()
+    
+    # Initialize an empty list to store processed characters
+    processed_chars = []
+    
+    i = 0
+    while i < len(text):
+        # If character is a digit, skip all characters until the next space
+        if text[i].isdigit():
+            while i < len(text) and text[i] != ' ':
+                i += 1
+        # If character is alphanumeric or space, add it to processed_chars
+        elif text[i].isalnum() and not text[i].isdigit() or text[i].isspace():
+            processed_chars.append(text[i])
+        i += 1
+    
+    # Join the processed characters into a string
+    processed_text = ''.join(processed_chars)
     
     # Tokenization
-    tokens = word_tokenize(text)
+    tokens = word_tokenize(processed_text)
     
     # Remove stopwords
     stop_words = set(stopwords.words('english'))
@@ -33,6 +69,12 @@ def preprocess_text(text):
     tokens = [stemmer.stem(word) for word in tokens]
     
     return ' '.join(tokens)
+
+# Example usage:
+text = "This is an example text with some numbers like 12345 and punctuation! But we'll remove them."
+processed_text = preprocess_text(text)
+print(processed_text)
+
 
 def preprocess_text_list(text_list):
     preprocessed_texts = [preprocess_text(text) for text in text_list]
@@ -70,7 +112,7 @@ texts = [
     "You have received UPI mandate collect request from TATA TECHNOLOGIES LI for INR 15000.00. Log into Google Pay app to authorize - Axis Bank",
     "ANURAG JAIN has requested money from you on Google Pay. On approving the request, INR 31.00 will be debited from your A/c - Axis Bank",
     "Flipkart Refund Processed: Refund of Rs. 237.0 for favoru Household wrap ... is successfully transferred and will be credited to your account by Oct 04, 2023.",
-    "UPI mandate has been successfully created towards TATA TECHNOLOGIES LI for INR 15000.00. Funds blocked from A/c no. XX8926. 12e5d61d2ac145738241fbf117bb295c@okaxis - Axis Bank",
+    "UPI mandate has been successfully created towards TATA TECHNOLOGIES LI for INR 15000.00. Funds blocked from A/c no. XX8926. 12e5d61d2ac145738241fbf117bb295c@okaxis - Axis Bank"
 ]
 
 # Preprocess the texts
@@ -91,6 +133,7 @@ labels = df['label'].tolist()
 
 # Create a Tokenizer with an out-of-vocabulary (OOV) token
 tokenizer = Tokenizer(oov_token='<OOV>')
+# print(tokenizer)
 tokenizer.fit_on_texts(texts)
 
 # Save the tokenizer to a file
@@ -99,6 +142,7 @@ with open('tokenizer.pkl', 'wb') as token_file:
 
 # Convert the text data to sequences of integers using the tokenizer
 sequences = tokenizer.texts_to_sequences(texts)
+# print(sequences)
 # Pad the sequences to ensure uniform length for neural network input
 padded_sequences = pad_sequences(sequences, padding='post')
 
@@ -128,12 +172,27 @@ encoded_labels = df['encoded_label'].tolist()
 labels_np = np.array(encoded_labels)
 # Replace the lambda function with a named function
 def custom_sparse_softmax_cross_entropy(labels, logits):
-    return tf.compat.v1.losses.sparse_softmax_cross_entropy(labels, logits)
+    return tf.compat.v1.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
 
 # Compile the model with the named function
-model.compile(optimizer='adam', loss=custom_sparse_softmax_cross_entropy, metrics=['accuracy'])
+model.compile(optimizer='adam', loss=custom_sparse_softmax_cross_entropy, metrics=['accuracy', 'precision', 'recall'])
 
 # Train the model
 model.fit(padded_sequences, labels_np, epochs=100)
 # Save the model in the recommended Keras format
 model.save('trained_model.keras')
+
+
+# One-hot encode labels (assuming labels are text strings)
+# label_encoder = LabelEncoder()
+# labels_encoded = label_encoder.fit_transform(labels)
+# labels_onehot = tf.keras.utils.to_categorical(labels_encoded, num_classes=len(set(labels)))  # Adjust num_classes if needed
+
+# # Compile the model with categorical crossentropy loss
+# model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', 'precision', 'recall'])
+
+# # Train the model
+# model.fit(padded_sequences, labels_onehot, epochs=100)
+
+# # Save the model
+# model.save('trained_model.keras')
