@@ -11,6 +11,7 @@ from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
 import pickle
+import matplotlib.pyplot as plt
 
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -51,7 +52,7 @@ def preprocess_text(text):
     return ' '.join(tokens)
 
 # Example usage:
-text = "This is an example text with some numbers like 12345 and punctuation! But we'll remove them."
+text = "This is an example text with some numbers like 12345, email like abc@gmail.com and punctuation! But we'll remove them."
 processed_text = preprocess_text(text)
 print(processed_text)
 
@@ -112,8 +113,8 @@ texts = df['text'].tolist()
 labels = df['label'].tolist()
 
 # Create a Tokenizer with an out-of-vocabulary (OOV) token
-tokenizer = Tokenizer(oov_token='<OOV>')
-# print(tokenizer)
+# this will replace any unknown words with a token of our choosing
+tokenizer = Tokenizer(num_words=95000, oov_token='OOV', filters='!"#$%&()*+,-./:;<=>@[\]^_`{|}~ ')
 tokenizer.fit_on_texts(texts)
 
 # Save the tokenizer to a file
@@ -122,7 +123,7 @@ with open('tokenizer.pkl', 'wb') as token_file:
 
 # Convert the text data to sequences of integers using the tokenizer
 sequences = tokenizer.texts_to_sequences(texts)
-# print(sequences)
+
 # Pad the sequences to ensure uniform length for neural network input
 padded_sequences = pad_sequences(sequences, padding='post')
 
@@ -135,21 +136,22 @@ model = Sequential([
     Embedding(input_dim=len(tokenizer.word_index) + 1, output_dim=32),
     
     # LSTM layer for processing sequential data
-    LSTM(100),
+    LSTM(50),
     
     # Dense output layer for classification
     Dense(num_classes, activation='softmax')
 ])
 
 # Assuming 'df' is your DataFrame containing the 'label' column
-label_encoder = LabelEncoder()
-df['encoded_label'] = label_encoder.fit_transform(df['label'])
+label_encoder = LabelEncoder() # will be used to convert categorical labels into numerical labels.
+df['encoded_label'] = label_encoder.fit_transform(df['label']) # transform these labels into numerical format
 
 # Extract the encoded labels
 encoded_labels = df['encoded_label'].tolist()
 
 # Convert labels to NumPy array
 labels_np = np.array(encoded_labels)
+
 # Replace the lambda function with a named function
 def custom_sparse_softmax_cross_entropy(labels, logits):
     return tf.compat.v1.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
@@ -158,6 +160,26 @@ def custom_sparse_softmax_cross_entropy(labels, logits):
 model.compile(optimizer='adam', loss=custom_sparse_softmax_cross_entropy, metrics=['accuracy', 'precision', 'recall'])
 
 # Train the model
-model.fit(padded_sequences, labels_np, epochs=100)
+# model.fit(padded_sequences, labels_np, epochs=100)
+
+# Assuming you have stored the model training history in a variable named 'history'
+history = model.fit(padded_sequences, labels_np, epochs=100, validation_split=0.2)
+
+# Extracting training and validation loss from history
+training_loss = history.history['loss']
+validation_loss = history.history['val_loss']
+
+# Plotting the training and validation loss
+epochs = range(1, len(training_loss) + 1)
+plt.figure(figsize=(10, 6))
+plt.plot(epochs, training_loss, 'bo-', label='Training Loss')
+plt.plot(epochs, validation_loss, 'ro-', label='Validation Loss')
+plt.title('Training and Validation Loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.grid(True)
+plt.show()
+
 # Save the model in the recommended Keras format
 model.save('trained_model.keras')
