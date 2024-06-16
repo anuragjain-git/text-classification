@@ -10,31 +10,11 @@ from keras.models import Sequential
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
-import re
-
 import pickle
-
 
 nltk.download('stopwords')
 nltk.download('punkt')
 
-# def preprocess_text(text):
-#     # Remove punctuation, convert to lowercase
-#     # text = ''.join([char.lower() for char in text if char.isalnum() and not char.isdigit() or char.isspace()])
-#     text = ''.join([char.lower() for char in text if char.isalnum() or char.isspace()])
-    
-#     # Tokenization
-#     tokens = word_tokenize(text)
-    
-#     # Remove stopwords
-#     stop_words = set(stopwords.words('english'))
-#     tokens = [word for word in tokens if word not in stop_words]
-    
-#     # Stemming
-#     stemmer = PorterStemmer()
-#     tokens = [stemmer.stem(word) for word in tokens]
-    
-#     return ' '.join(tokens)
 
 def preprocess_text(text):
     # Convert to lowercase
@@ -181,18 +161,3 @@ model.compile(optimizer='adam', loss=custom_sparse_softmax_cross_entropy, metric
 model.fit(padded_sequences, labels_np, epochs=100)
 # Save the model in the recommended Keras format
 model.save('trained_model.keras')
-
-
-# One-hot encode labels (assuming labels are text strings)
-# label_encoder = LabelEncoder()
-# labels_encoded = label_encoder.fit_transform(labels)
-# labels_onehot = tf.keras.utils.to_categorical(labels_encoded, num_classes=len(set(labels)))  # Adjust num_classes if needed
-
-# # Compile the model with categorical crossentropy loss
-# model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', 'precision', 'recall'])
-
-# # Train the model
-# model.fit(padded_sequences, labels_onehot, epochs=100)
-
-# # Save the model
-# model.save('trained_model.keras')
